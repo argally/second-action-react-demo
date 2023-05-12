@@ -15,7 +15,6 @@ jobs:
       - name: Run tests
         run: npm test
   deploy:
-    # Make deploy depend on test to run first.
     needs: test
     runs-on: ubuntu-latest
     steps:
