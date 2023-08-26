@@ -18,8 +18,8 @@ on:
       - 'dev-*' # Any branches that begin with dev-* 
       - 'feat/**' # feat/new or feat/new/button
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore
-    paths-ignores:  # 
-      - '.github/workflows/*'  # if anything in this path changes don't run this workflow. Even if we change other files. 
+    paths-ignore:
+      - '.github/workflows/*'  #if anything in this path changes don't run this workflow. Even if we change other files.
 jobs:
     deploy:
       runs-on: ubuntu-latest
