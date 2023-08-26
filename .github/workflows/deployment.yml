@@ -1,10 +1,23 @@
 name: Deploy Project
 on: [push, workflow_dispatch]
 jobs:
+  lint:
+    runs-on:ubuntu-latest
+    steps:
+    - name: Linting
+      uses: actions/checkout@v3
+    - name: Install NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install dependencies
+      run: npm ci
+    - name: Run tests
+      run: npm lint
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Code
+      - name: Testing
         uses: actions/checkout@v3
       - name: Install NodeJS
         uses: actions/setup-node@v3
@@ -16,10 +29,10 @@ jobs:
         run: npm test
   deploy:
     # Make deploy depend on test to run first.
-    needs: test
+    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
-      - name: Get Code
+      - name: Deploying
         uses: actions/checkout@v3
       - name: Install NodeJS
         uses: actions/setup-node@v3
