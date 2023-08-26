@@ -2,11 +2,24 @@
 name: Events Demo 1
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
 on:
-  # only trigger on pull request opened event activity type - 
+  # only trigger on pull request opened event activity type
   pull_request: 
     types:
       - opened
+    branches:
+      - main  # only pulls againt main branch trigger workflow
+      - 'dev-*' # Any branches that begin with dev-* 
+      - 'feat/**' # feat/new or feat/new/button 
   workflow_dispatch:
+  #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+  push:
+    branches:
+      - main  # only pushes to main branch trigger workflow
+      - 'dev-*' # Any branches that begin with dev-* 
+      - 'feat/**' # feat/new or feat/new/button
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore
+    paths-ignores:  # 
+      - '.github/workflows/*'  # if anything in this path changes don't run this workflow. Even if we change other files. 
 jobs:
     deploy:
       runs-on: ubuntu-latest
