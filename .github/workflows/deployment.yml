@@ -38,6 +38,13 @@ jobs:
         run: npm ci
       - name: Build Project
         run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
   
   deploy:
     # Make deploy depend on test to run first.
