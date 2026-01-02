@@ -21,7 +21,7 @@ on:
     paths-ignore:
       - '.github/workflows/*'  #if anything in this path changes don't run this workflow. Even if we change other files.
 jobs:
-    deploy:
+    deployment:
       runs-on: ubuntu-latest
       steps:
         - name: Output event data

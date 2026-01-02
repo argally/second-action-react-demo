@@ -27,20 +27,28 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
-  deploy:
+  build:
     # Make deploy depend on test to run first.
-    needs: [lint, test]
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Deploying
+      - name: Get code
         uses: actions/checkout@v3
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Install dependencies
         run: npm ci
       - name: Build Project
         run: npm run build
-      - name: Deploy
-        run: echo "deploying.."
+  
+  deploy:
+    # Make deploy depend on test to run first.
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying
+        run: echo "Deploying.."
+    
+  
+    
+
+
+
