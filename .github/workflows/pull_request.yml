@@ -7,7 +7,6 @@ on:
     types:
       - opened
     branches:
-      - main  # only pulls againt main branch trigger workflow
       - 'dev-*' # Any branches that begin with dev-* 
       - 'feat/**' # feat/new or feat/new/button 
   workflow_dispatch:
