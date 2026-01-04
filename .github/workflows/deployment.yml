@@ -31,6 +31,11 @@ jobs:
     # Make deploy depend on test to run first.
     needs: test
     runs-on: ubuntu-latest
+    # generates a job level output for the build job based on the step output that can be passed into other jobs e.g deploy
+    outputs:
+      # References the output of step with id=publish below and corresponding value of key value 
+      #  'script-file' which is temporarily stored in $GITHUB_OUTPUT so it can be retrieved and stored by this step
+      script-file: ${{ steps.publish.outputs.script-file}}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -38,6 +43,11 @@ jobs:
         run: npm ci
       - name: Build Project
         run: npm run build
+      - name: Publish JS filename
+        id: publish
+        # the step finds the built JavaScript file (whose name changes with every build) and saves its filename into a variable named script-file
+        # $GITHUB_OUTPUT is a special environment variable that github uses to store output between github steps. 
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -58,5 +68,7 @@ jobs:
           name: dist-files
       - name: Output contents
         run: ls
+      - name: Output filename
+        run: echo "${{ needs.build.outputs.script-file}}"
       - name: Deploying
         run: echo "Deploying.."
