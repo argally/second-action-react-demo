@@ -11,7 +11,8 @@ jobs:
         with:
           node-version: 18
       - name: Cache dependencies
-        id: cache4        uses: actions/cache@v3
+        id: cache
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: deps-node-module-${{ hashFiles('**/package-lock.json')}}
