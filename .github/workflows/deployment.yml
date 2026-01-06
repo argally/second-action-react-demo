@@ -37,6 +37,11 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test.json
   build:
     # Make deploy depend on test to run first.
     needs: test
