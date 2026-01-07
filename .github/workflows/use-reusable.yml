@@ -85,6 +85,8 @@ jobs:
     # Make deploy depend on test to run first.
     needs: build
     uses: ./.github/workflows/reusable.yml
+    with:
+      artifact-name: dist-files
   report:
     needs: [lint, deploy]
     if: failure()
