@@ -1,37 +1,37 @@
-# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
-name: Events Demo 1
-# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
-on:
-  # only trigger on pull request opened event activity type
-  pull_request: 
-    types:
-      - opened
-    branches:
-      - 'dev-*' # Any branches that begin with dev-* 
-      - 'feat/**' # feat/new or feat/new/button 
-  workflow_dispatch:
-  #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-  push:
-    branches:
-      - main  # only pushes to main branch trigger workflow
-      - 'dev-*' # Any branches that begin with dev-* 
-      - 'feat/**' # feat/new or feat/new/button
-      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore
-    paths-ignore:
-      - '.github/workflows/*'  #if anything in this path changes don't run this workflow. Even if we change other files.
-jobs:
-    deployment:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Output event data
-          run: echo "${{ toJSON(github.event) }}"
-        - name: Get code
-          uses: actions/checkout@v3
-        - name: Install dependencies
-          run: npm ci
-        - name: Test code
-          run: npm run test
-        - name: Build code
-          run: npm run build
-        - name: Deploy project
-          run: echo "Deploying project..."
+# # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+# name: Events Demo 1
+# # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+# on:
+#   # only trigger on pull request opened event activity type
+#   pull_request: 
+#     types:
+#       - opened
+#     branches:
+#       - 'dev-*' # Any branches that begin with dev-* 
+#       - 'feat/**' # feat/new or feat/new/button 
+#   workflow_dispatch:
+#   #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+#   push:
+#     branches:
+#       - main  # only pushes to main branch trigger workflow
+#       - 'dev-*' # Any branches that begin with dev-* 
+#       - 'feat/**' # feat/new or feat/new/button
+#       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore
+#     paths-ignore:
+#       - '.github/workflows/*'  #if anything in this path changes don't run this workflow. Even if we change other files.
+# jobs:
+#     deployment:
+#       runs-on: ubuntu-latest
+#       steps:
+#         - name: Output event data
+#           run: echo "${{ toJSON(github.event) }}"
+#         - name: Get code
+#           uses: actions/checkout@v3
+#         - name: Install dependencies
+#           run: npm ci
+#         - name: Test code
+#           run: npm run test
+#         - name: Build code
+#           run: npm run build
+#         - name: Deploy project
+#           run: echo "Deploying project..."
