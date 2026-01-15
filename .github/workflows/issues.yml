@@ -1,9 +1,0 @@
-# name: Issues information
-# on: issues
-# jobs:
-#   info:
-#     runs-on: ubuntu-latest
-#     steps:
-#       # Access github contexts - https://docs.github.com/en/actions/learn-github-actions/contexts
-#       - name: Display issues
-#         run: echo "${{ toJSON(github.event) }}"
