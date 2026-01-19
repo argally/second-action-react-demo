@@ -69,4 +69,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
         with:
           bucket: gha-custom-action-hosting-mandy
+          bucket-region: us-east-1
           dist-folder: ./dist
