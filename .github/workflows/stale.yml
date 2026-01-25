@@ -1,8 +1,7 @@
 name: Stale Issues & PRs
 on:
   schedule:
-    - cron: "0 14 * * *"
-    - cron: "*/5 * * * *" # JUST FOR TESTING
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 jobs:
   stale:
