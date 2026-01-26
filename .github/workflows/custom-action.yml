@@ -1,0 +1,78 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Load and cache dependencies
+        id: cache-deps
+        uses: ./.github/actions/cached-deps
+        with:
+          caching: 'false'
+      - name: Output information
+        run: echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
+      - name: Lint code
+        run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Load and cache dependencies
+        uses: ./.github/actions/cached-deps
+      - name: Test code
+        id: run-tests
+        run: npm run test
+      - name: Upload test report
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: test.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Load and cache dependencies
+        uses: ./.github/actions/cached-deps
+      - name: Build website
+        run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist
+  deploy:
+    permissions:
+      id-token: write # Enable write to allow GitHub's OIDC provider to create a JSON Web Token for every run.
+      contents: read # We then need to ensure we can still read repo contents in addition to the JWT token
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Get build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
+          path: ./dist
+      - name: Output contents
+        run: ls
+      - name: Get AWS permissions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::463470961618:role/GithubDemo1
+      - name: Deploy site
+        uses: ./.github/actions/deploy-s3-docker
+        with:
+          bucket: gha-custom-action-hosting-mandy
+          bucket-region: us-east-1
+          dist-folder: ./dist
